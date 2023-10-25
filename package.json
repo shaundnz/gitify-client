@@ -15,8 +15,11 @@
 		"test:unit": "vitest"
 	},
 	"devDependencies": {
+		"@iconify-json/material-symbols": "^1.1.60",
+		"@iconify-json/mdi": "^1.1.54",
 		"@playwright/test": "^1.28.1",
 		"@sveltejs/adapter-auto": "^2.0.0",
+		"@sveltejs/adapter-static": "^2.0.3",
 		"@sveltejs/kit": "^1.20.4",
 		"@testing-library/jest-dom": "^6.1.4",
 		"@testing-library/svelte": "^4.0.4",
@@ -37,6 +40,7 @@
 		"tailwindcss": "^3.3.3",
 		"tslib": "^2.4.1",
 		"typescript": "^5.0.0",
+		"unplugin-icons": "^0.17.1",
 		"vite": "^4.4.2",
 		"vitest": "^0.32.2"
 	},
