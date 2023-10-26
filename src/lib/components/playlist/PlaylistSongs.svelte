@@ -3,18 +3,25 @@
 </script>
 
 <div>
-	<div class="p-6">Playlist controls here</div>
-	<div class="px-6">
-		<div class="px-4"># Title</div>
-		<div class="divider m-0" />
-		<div>
-			<SongItem />
-			<SongItem />
-			<SongItem />
-			<SongItem />
-			<SongItem />
-			<SongItem />
-			<SongItem />
-		</div>
+	<div class="flex justify-between px-4 text-sm">
+		<div>Title</div>
+		<div>Date Added</div>
+	</div>
+	<div class="divider m-0" />
+	<div>
+		<SongItem />
+		<SongItem />
+		<SongItem />
+		<SongItem />
+		<SongItem />
+		<SongItem />
+		<SongItem />
+		<SongItem />
+		<SongItem />
+		<SongItem />
+		<SongItem />
+		<SongItem />
+		<SongItem />
+		<SongItem />
 	</div>
 </div>
