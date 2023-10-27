@@ -1,4 +1,5 @@
 export * from './Playlist';
 export * from './Song';
-export * from './PlaylistVersionCompare';
+export * from './PlaylistFull';
 export * from './SongVersionCompare';
+export * from './PlaylistVersion';
