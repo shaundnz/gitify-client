@@ -9,6 +9,6 @@
 </script>
 
 <div class="p-2 w-full">
-	<PlaylistHeader {playlist} />
+	<PlaylistHeader playlist={playlist.playlist} />
 	<PlaylistVersionCompare {playlist} />
 </div>
