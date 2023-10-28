@@ -1,8 +1,12 @@
 <script lang="ts">
-	import type { SongVersionCompare } from '$lib/types';
+	import type { PlaylistedTrack } from '@spotify/web-api-ts-sdk';
 	import SongItem from './SongItem.svelte';
+	import type { PlaylistSongStatus } from '$lib/constants';
+	interface PlaylistedTrackWithStatus extends PlaylistedTrack {
+		status?: PlaylistSongStatus;
+	}
 
-	export let songs: SongVersionCompare[];
+	export let songs: PlaylistedTrackWithStatus[];
 </script>
 
 <div>

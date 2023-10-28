@@ -1,19 +1,22 @@
 <script lang="ts">
-	import type { Playlist } from '$lib/types';
+	import type { PlaylistDto } from '$lib/contracts';
 
-	export let playlist: Playlist;
-	$: ({ id, title, description, imageUrl } = playlist);
+	export let playlist: PlaylistDto;
 </script>
 
-<a href={`/playlists/${id}`}>
+<a href={`/playlists/${playlist.id}`}>
 	<div class=" p-4 rounded-md bg-primary hover:bg-primary-focus">
 		<div class="mb-4">
-			<img src={imageUrl} alt="playlist" />
+			<img
+				src={playlist.images[0].url}
+				alt={playlist.name}
+				class="w-full aspect-square object-cover"
+			/>
 		</div>
 		<div class="h-16">
-			<div class="pb-1 text-white font-bold line-clamp-1">{title}</div>
+			<div class="pb-1 text-white font-bold line-clamp-1">{playlist.name}</div>
 			<div class="text-sm line-clamp-2">
-				{description}
+				{playlist.description}
 			</div>
 		</div>
 	</div>

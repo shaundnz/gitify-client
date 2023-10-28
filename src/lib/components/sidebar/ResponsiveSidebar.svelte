@@ -3,9 +3,9 @@
 	import GitBranchIcon from '~icons/mdi/source-branch';
 	import PlaylistItem from './PlaylistItem.svelte';
 	import ResponsiveTooltip from '../common/ResponsiveTooltip.svelte';
-	import type { Playlist } from '$lib/types';
+	import type { PlaylistDto } from '$lib/contracts';
 
-	export let playlists: Playlist[];
+	export let playlists: PlaylistDto[];
 </script>
 
 <div class="p-2 min-h-full w-20 lg:w-80 flex-shrink-0">

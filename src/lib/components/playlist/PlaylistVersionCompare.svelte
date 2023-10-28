@@ -1,23 +1,21 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
-	import { SongVersionStatus, type PlaylistFull } from '$lib/types';
-	import type { PlaylistVersion } from '$lib/types/PlaylistVersion';
-	import { playlistVersionDiff } from '$lib/utils';
+	import type { PlaylistVersionsDto, PlaylistVersionDto } from '$lib/contracts';
+	// import { playlistVersionDiff } from '$lib/utils';
 	import PlaylistSongs from './PlaylistSongs.svelte';
-	export let playlist: PlaylistFull;
+	export let playlist: PlaylistVersionsDto;
 
 	interface PlaylistVersionMap {
-		[date: string]: PlaylistVersion;
+		[date: string]: PlaylistVersionDto;
 	}
 
 	let playlistVersionsMap: PlaylistVersionMap = {};
-
 	$: playlist.playlistVersions.forEach((playlistVersion) => {
 		playlistVersionsMap[playlistVersion.versionDate.toISOString()] = playlistVersion;
 	});
 
-	let selectedPlaylistBefore: PlaylistVersion | null = null;
-	let selectedPlaylistAfter: PlaylistVersion | null = null;
+	let selectedPlaylistBefore: PlaylistVersionDto | null = null;
+	let selectedPlaylistAfter: PlaylistVersionDto | null = null;
 
 	afterNavigate(() => {
 		selectedPlaylistBefore = null;
@@ -67,16 +65,9 @@
 			{#if !selectedPlaylistBefore}
 				<div>No before playlist version selected</div>
 			{:else if !selectedPlaylistAfter}
-				<PlaylistSongs
-					songs={selectedPlaylistBefore.songs.map((s) => ({
-						...s,
-						status: SongVersionStatus.NoChange
-					}))}
-				/>
+				<PlaylistSongs songs={selectedPlaylistBefore.tracks} />
 			{:else}
-				<PlaylistSongs
-					songs={playlistVersionDiff([selectedPlaylistBefore, selectedPlaylistAfter])[0]}
-				/>
+				<PlaylistSongs songs={selectedPlaylistBefore.tracks} />
 			{/if}
 		</div>
 		<div class="divider divider-horizontal m-1" />
@@ -84,16 +75,9 @@
 			{#if !selectedPlaylistAfter}
 				<div>No after playlist version selected</div>
 			{:else if !selectedPlaylistBefore}
-				<PlaylistSongs
-					songs={selectedPlaylistAfter.songs.map((s) => ({
-						...s,
-						status: SongVersionStatus.NoChange
-					}))}
-				/>
+				<PlaylistSongs songs={selectedPlaylistAfter.tracks} />
 			{:else}
-				<PlaylistSongs
-					songs={playlistVersionDiff([selectedPlaylistBefore, selectedPlaylistAfter])[1]}
-				/>
+				<PlaylistSongs songs={selectedPlaylistAfter.tracks} />
 			{/if}
 		</div>
 	</div>
