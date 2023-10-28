@@ -2,7 +2,7 @@
 	import type { Playlist } from '$lib/types';
 
 	export let playlist: Playlist;
-	const { id, title, description, imageUrl } = playlist;
+	$: ({ id, title, description, imageUrl } = playlist);
 </script>
 
 <a href={`/playlists/${id}`}>
@@ -11,7 +11,7 @@
 			<img src={imageUrl} alt="playlist" />
 		</div>
 		<div class="h-16">
-			<div class="pb-1 text-white font-bold">{title}</div>
+			<div class="pb-1 text-white font-bold line-clamp-1">{title}</div>
 			<div class="text-sm line-clamp-2">
 				{description}
 			</div>

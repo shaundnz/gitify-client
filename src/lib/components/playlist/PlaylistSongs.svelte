@@ -1,5 +1,8 @@
 <script lang="ts">
+	import type { SongVersionCompare } from '$lib/types';
 	import SongItem from './SongItem.svelte';
+
+	export let songs: SongVersionCompare[];
 </script>
 
 <div>
@@ -9,19 +12,8 @@
 	</div>
 	<div class="divider m-0" />
 	<div>
-		<SongItem />
-		<SongItem />
-		<SongItem />
-		<SongItem />
-		<SongItem />
-		<SongItem />
-		<SongItem />
-		<SongItem />
-		<SongItem />
-		<SongItem />
-		<SongItem />
-		<SongItem />
-		<SongItem />
-		<SongItem />
+		{#each songs as song}
+			<SongItem {song} />
+		{/each}
 	</div>
 </div>

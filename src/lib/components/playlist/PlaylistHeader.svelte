@@ -2,7 +2,7 @@
 	import type { Playlist } from '$lib/types';
 
 	export let playlist: Playlist;
-	const { title, description, imageUrl } = playlist;
+	$: ({ title, description, imageUrl } = playlist);
 </script>
 
 <div class="flex items-end space-x-6 h-80">

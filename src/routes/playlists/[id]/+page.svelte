@@ -4,17 +4,11 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+
+	$: ({ playlist } = data);
 </script>
 
-<div class="p-2">
-	<PlaylistHeader
-		playlist={{
-			id: data.id,
-			title: 'Playlist Title',
-			description:
-				'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam pretium libero eget laoreet suscipit.',
-			imageUrl: 'https://i.scdn.co/image/ab67706f00000003f11d2a4483ba53adf4ee6c55'
-		}}
-	/>
-	<PlaylistVersionCompare />
+<div class="p-2 w-full">
+	<PlaylistHeader {playlist} />
+	<PlaylistVersionCompare {playlist} />
 </div>
