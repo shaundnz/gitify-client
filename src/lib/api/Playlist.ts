@@ -1,17 +1,15 @@
-import type { PlaylistFullDto, PlaylistPartialDto } from '$lib/contracts';
-import { PlaylistMapper } from '$lib/mappers';
-import type { Playlist, PlaylistFull } from '$lib/types';
+import type { PlaylistDto, PlaylistVersionsDto } from '$lib/contracts';
 import { get, post } from './fetchWrapper';
 
 export class PlaylistsApi {
-	static async getAllPlaylists(): Promise<Playlist[]> {
-		const allPlaylistsRes = await get<PlaylistPartialDto[]>('/playlists');
-		return allPlaylistsRes.map((playlist) => PlaylistMapper.PartialDtoToObject(playlist));
+	static async getAllPlaylists(): Promise<PlaylistDto[]> {
+		const allPlaylistsRes = await get<PlaylistDto[]>('/playlists');
+		return allPlaylistsRes;
 	}
 
-	static async getPlaylist(id: string): Promise<PlaylistFull> {
-		const fullPlaylistRes = await get<PlaylistFullDto>(`/playlists/${id}`);
-		return PlaylistMapper.FullDtoToObject(fullPlaylistRes);
+	static async getPlaylist(id: string): Promise<PlaylistVersionsDto> {
+		const fullPlaylistRes = await get<PlaylistVersionsDto>(`/playlists/${id}`);
+		return fullPlaylistRes;
 	}
 
 	static async updatePlaylist(ids: string[]) {
