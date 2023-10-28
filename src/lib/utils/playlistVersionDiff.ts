@@ -1,45 +1,48 @@
-import {
-	SongVersionStatus,
-	type Song,
-	type SongVersionCompare,
-	type PlaylistVersion
-} from '$lib/types';
+import { PlaylistSongStatus } from '$lib/constants';
+import type { PlaylistVersionDto } from '$lib/contracts';
+import type { PlaylistedTrackWithStatus } from '$lib/types';
+import type { PlaylistedTrack } from '@spotify/web-api-ts-sdk';
 
-interface PlaylistVersionMap {
-	[id: string]: Song;
+interface PlaylistVersionSongMap {
+	[id: string]: PlaylistedTrack;
 }
 
-export const playlistVersionDiff = ([versionBefore, versionAfter]: [
-	PlaylistVersion,
-	PlaylistVersion
-]): [SongVersionCompare[], SongVersionCompare[]] => {
-	const versionBeforeMap: PlaylistVersionMap = {};
-	versionBefore.songs.forEach((song) => {
-		versionBeforeMap[song.id] = song;
+export const playlistVersionDiff = (
+	versionBefore: PlaylistVersionDto,
+	versionAfter: PlaylistVersionDto
+): [PlaylistedTrackWithStatus[], PlaylistedTrackWithStatus[]] => {
+	const versionBeforeMap: PlaylistVersionSongMap = {};
+
+	versionBefore.tracks.forEach((track) => {
+		versionBeforeMap[track.track.id] = track;
 	});
 
-	const versionAfterMap: PlaylistVersionMap = {};
-	versionAfter.songs.forEach((song) => {
-		versionAfterMap[song.id] = song;
+	const versionAfterMap: PlaylistVersionSongMap = {};
+	versionAfter.tracks.forEach((track) => {
+		versionAfterMap[track.track.id] = track;
 	});
 
-	const versionBeforeCompared: SongVersionCompare[] = Object.keys(versionBeforeMap).map((id) => {
-		// Song exists in both before and after version
-		if (id in versionAfterMap) {
-			return { ...versionBeforeMap[id], status: SongVersionStatus.NoChange };
+	const versionBeforeCompared: PlaylistedTrackWithStatus[] = Object.keys(versionBeforeMap).map(
+		(id) => {
+			// Song exists in both before and after version
+			if (id in versionAfterMap) {
+				return { ...versionBeforeMap[id] };
+			}
+			// Song was in before version, but not in after version, was removed
+			return { ...versionBeforeMap[id], status: PlaylistSongStatus.Removed };
 		}
-		// Song was in before version, but not in after version, was removed
-		return { ...versionBeforeMap[id], status: SongVersionStatus.Removed };
-	});
+	);
 
-	const versionAfterCompared: SongVersionCompare[] = Object.keys(versionAfterMap).map((id) => {
-		// Song exists in both before and after version
-		if (id in versionBeforeMap) {
-			return { ...versionAfterMap[id], status: SongVersionStatus.NoChange };
+	const versionAfterCompared: PlaylistedTrackWithStatus[] = Object.keys(versionAfterMap).map(
+		(id) => {
+			// Song exists in both before and after version
+			if (id in versionBeforeMap) {
+				return { ...versionAfterMap[id] };
+			}
+			// Song is in after version, but not in before version, was added
+			return { ...versionAfterMap[id], status: PlaylistSongStatus.Added };
 		}
-		// Song is in after version, but not in before version, was added
-		return { ...versionAfterMap[id], status: SongVersionStatus.Added };
-	});
+	);
 
 	return [versionBeforeCompared, versionAfterCompared];
 };

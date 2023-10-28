@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
 	import type { PlaylistVersionsDto, PlaylistVersionDto } from '$lib/contracts';
-	// import { playlistVersionDiff } from '$lib/utils';
+	import { playlistVersionDiff } from '$lib/utils';
 	import PlaylistSongs from './PlaylistSongs.svelte';
 	export let playlist: PlaylistVersionsDto;
 
@@ -67,7 +67,9 @@
 			{:else if !selectedPlaylistAfter}
 				<PlaylistSongs songs={selectedPlaylistBefore.tracks} />
 			{:else}
-				<PlaylistSongs songs={selectedPlaylistBefore.tracks} />
+				<PlaylistSongs
+					songs={playlistVersionDiff(selectedPlaylistBefore, selectedPlaylistAfter)[0]}
+				/>
 			{/if}
 		</div>
 		<div class="divider divider-horizontal m-1" />
@@ -77,7 +79,9 @@
 			{:else if !selectedPlaylistBefore}
 				<PlaylistSongs songs={selectedPlaylistAfter.tracks} />
 			{:else}
-				<PlaylistSongs songs={selectedPlaylistAfter.tracks} />
+				<PlaylistSongs
+					songs={playlistVersionDiff(selectedPlaylistBefore, selectedPlaylistAfter)[1]}
+				/>
 			{/if}
 		</div>
 	</div>
