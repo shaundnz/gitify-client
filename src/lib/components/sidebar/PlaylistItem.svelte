@@ -6,7 +6,7 @@
 </script>
 
 <a href={`/playlists/${playlist.id}`}>
-	<ResponsiveTooltip tooltip="Playlist Title">
+	<ResponsiveTooltip tooltip={playlist.name}>
 		<div class="flex flex-row h-16 p-2 hover:bg-primary-focus rounded-lg">
 			<img
 				src={playlist.images[0].url}
@@ -15,7 +15,7 @@
 			/>
 			<div class="hidden lg:block ml-3">
 				<div class="text-white">{playlist.name}</div>
-				<div class="text-sm">Playlist &bull; Spotify</div>
+				<div class="text-sm">Playlist &bull; {playlist.owner.display_name}</div>
 			</div>
 		</div>
 	</ResponsiveTooltip>
