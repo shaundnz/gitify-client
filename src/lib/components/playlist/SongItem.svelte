@@ -35,6 +35,6 @@
 				{/each}
 			</div>
 		</div>
-		<div class="text-sm w-20 text-right">{dayjs(song.added_at).fromNow()}</div>
+		<div class="text-sm w-24 text-right">{dayjs(song.added_at).fromNow()}</div>
 	</div>
 </div>
