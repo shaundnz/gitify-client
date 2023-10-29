@@ -10,7 +10,7 @@
 			<img
 				src={playlist.images[0].url}
 				alt={playlist.name}
-				class="w-12 aspect-square object-cover"
+				class="w-12 aspect-square object-cover rounded-md"
 			/>
 		</div>
 	</div>
