@@ -1,8 +1,7 @@
 <script lang="ts">
 	import { afterNavigate } from '$app/navigation';
 	import type { PlaylistVersionsDto, PlaylistVersionDto } from '$lib/contracts';
-	import { playlistVersionDiff } from '$lib/utils';
-	import PlaylistSongs from './PlaylistSongs.svelte';
+	import PlaylistCompareList from './PlaylistCompareList.svelte';
 	export let playlist: PlaylistVersionsDto;
 
 	interface PlaylistVersionMap {
@@ -24,65 +23,43 @@
 </script>
 
 <div>
-	<div class="p-6 flex">
-		<div>
-			<label class="label" for="select-playlist-version-before">
-				<span class="label-text">Before:</span>
-			</label>
-			<select
-				class="select select-ghost select-sm w-full max-w-xs"
-				id="select-playlist-version-before"
-				bind:value={selectedPlaylistBefore}
-			>
-				<option disabled selected value={null}>Select a playlist version</option>
-				{#each playlist.playlistVersions as playlistVersion}
-					<option value={playlistVersion}>
-						{playlistVersion.versionDate.toISOString()}
-					</option>
-				{/each}
-			</select>
-		</div>
-		<div>
-			<label class="label" for="select-playlist-version-after">
-				<span class="label-text">After:</span>
-			</label>
-			<select
-				class="select select-ghost select-sm w-full max-w-xs"
-				id="select-playlist-version-after"
-				bind:value={selectedPlaylistAfter}
-			>
-				<option disabled selected value={null}>Select a playlist version</option>
-				{#each playlist.playlistVersions as playlistVersion}
-					<option value={playlistVersion}>
-						{playlistVersion.versionDate.toISOString()}
-					</option>
-				{/each}
-			</select>
-		</div>
-	</div>
-	<div class="px-6 flex w-full">
-		<div class="flex-1">
-			{#if !selectedPlaylistBefore}
-				<div>No before playlist version selected</div>
-			{:else if !selectedPlaylistAfter}
-				<PlaylistSongs songs={selectedPlaylistBefore.tracks} />
-			{:else}
-				<PlaylistSongs
-					songs={playlistVersionDiff(selectedPlaylistBefore, selectedPlaylistAfter)[0]}
-				/>
-			{/if}
-		</div>
-		<div class="divider divider-horizontal m-1" />
-		<div class="flex-1">
-			{#if !selectedPlaylistAfter}
-				<div>No after playlist version selected</div>
-			{:else if !selectedPlaylistBefore}
-				<PlaylistSongs songs={selectedPlaylistAfter.tracks} />
-			{:else}
-				<PlaylistSongs
-					songs={playlistVersionDiff(selectedPlaylistBefore, selectedPlaylistAfter)[1]}
-				/>
-			{/if}
+	<div class="p-6 space-y-2">
+		<div class="flex">
+			<div>
+				<label class="label" for="select-playlist-version-before">
+					<span class="label-text">Before:</span>
+				</label>
+				<select
+					class="select select-ghost select-sm w-full max-w-xs"
+					id="select-playlist-version-before"
+					bind:value={selectedPlaylistBefore}
+				>
+					<option disabled selected value={null}>Select a playlist version</option>
+					{#each playlist.playlistVersions as playlistVersion}
+						<option value={playlistVersion}>
+							{playlistVersion.versionDate.toISOString()}
+						</option>
+					{/each}
+				</select>
+			</div>
+			<div>
+				<label class="label" for="select-playlist-version-after">
+					<span class="label-text">After:</span>
+				</label>
+				<select
+					class="select select-ghost select-sm w-full max-w-xs"
+					id="select-playlist-version-after"
+					bind:value={selectedPlaylistAfter}
+				>
+					<option disabled selected value={null}>Select a playlist version</option>
+					{#each playlist.playlistVersions as playlistVersion}
+						<option value={playlistVersion}>
+							{playlistVersion.versionDate.toISOString()}
+						</option>
+					{/each}
+				</select>
+			</div>
 		</div>
 	</div>
+	<PlaylistCompareList {selectedPlaylistBefore} {selectedPlaylistAfter} />
 </div>
