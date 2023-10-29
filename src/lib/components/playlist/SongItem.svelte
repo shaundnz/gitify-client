@@ -28,9 +28,13 @@
 	<img src={track.album.images[0].url} alt={track.album.name} class="w-10 h-10" />
 	<div class="flex flex-1 justify-between">
 		<div>
-			<div class="text-white">{track.name}</div>
-			<div class="text-sm">{track.artists[0].name}</div>
+			<div class="text-white line-clamp-1">{track.name}</div>
+			<div class="text-sm line-clamp-1">
+				{#each track.artists as artist, index}
+					{artist.name}{index !== track.artists.length - 1 ? ', ' : ''}
+				{/each}
+			</div>
 		</div>
-		<div class="text-sm">{dayjs(song.added_at).fromNow()}</div>
+		<div class="text-sm w-20 text-right">{dayjs(song.added_at).fromNow()}</div>
 	</div>
 </div>
