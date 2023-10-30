@@ -4,7 +4,12 @@ on:
   push:
     branches: ['main']
 
+permissions:
+  contents: read
+
 jobs:
   deploy:
     name: Deploy
+    permissions:
+      id-token: write
     uses: ./.github/workflows/deploy-to-aws.yml
