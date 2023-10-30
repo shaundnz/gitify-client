@@ -1,6 +1,18 @@
 name: Deploy to Amazon S3 and CloudFront
 
-on: workflow_call
+on:
+  workflow_call:
+    secrets:
+      SECRET_API_KEY:
+        required: true
+      AWS_ROLE_TO_ASSUME:
+        required: true
+      AWS_REGION:
+        required: true
+      S3_BUCKET:
+        required: true
+      AWS_DISTRIBUTION_ID:
+        required: true
 
 permissions:
   contents: read
