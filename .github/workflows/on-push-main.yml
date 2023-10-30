@@ -1,0 +1,13 @@
+name: Deploy to Amazon S3 and CloudFront
+
+on:
+  push:
+    branches: ['main']
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    name: Deploy
+    uses: ./.github/workflows/deploy-to-aws.yml

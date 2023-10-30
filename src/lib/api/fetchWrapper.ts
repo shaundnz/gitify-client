@@ -2,7 +2,10 @@ import type { ErrorDto } from '$lib/contracts';
 import { HttpError } from './HttpError';
 
 function client<T, V = string>(endpoint: string, config: RequestInit): Promise<T> {
-	const headers = { 'Content-Type': 'application/json' };
+	const headers = {
+		'Content-Type': 'application/json',
+		'X-Api-Key': process.env.SECRET_API_KEY || 'dev'
+	};
 	config.headers = { ...headers, ...config.headers };
 
 	return fetch(`${import.meta.env.VITE_API_BASE_URL}${endpoint}`, config).then(async (response) => {
