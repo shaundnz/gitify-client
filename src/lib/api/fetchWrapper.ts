@@ -4,7 +4,7 @@ import { HttpError } from './HttpError';
 function client<T, V = string>(endpoint: string, config: RequestInit): Promise<T> {
 	const headers = {
 		'Content-Type': 'application/json',
-		'X-Api-Key': process.env.SECRET_API_KEY || 'dev'
+		'X-Api-Key': process.env.SECRET_API_KEY || ''
 	};
 	config.headers = { ...headers, ...config.headers };
 

@@ -1,0 +1,27 @@
+name: Daily update and deployment
+
+on:
+  schedule:
+    - cron: '15 22 * * *'
+
+jobs:
+  update:
+    name: Update Playlists
+    runs-on: ubuntu-latest
+    environment: production
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Run update script
+        run: node scripts/updatePlaylists.js
+        env:
+          API_BASE_URL: ${{ secrets.VITE_API_BASE_URL }}
+          SECRET_API_KEY: ${{ secrets.SECRET_API_KEY }}
+
+  deploy:
+    name: Deploy
+    uses: ./.github/workflows/deploy-to-aws.yml
