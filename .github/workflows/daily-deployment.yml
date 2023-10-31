@@ -24,6 +24,7 @@ jobs:
 
   deploy:
     name: Deploy
+    needs: update
     permissions:
       contents: read
       id-token: write
