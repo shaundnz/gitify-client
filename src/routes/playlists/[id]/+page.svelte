@@ -8,7 +8,7 @@
 	$: ({ playlist } = data);
 </script>
 
-<div class="p-2 w-full">
+<div class="p-6 w-full">
 	<PlaylistHeader playlist={playlist.playlist} />
 	<PlaylistVersionCompare {playlist} />
 </div>
