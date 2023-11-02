@@ -20,7 +20,9 @@ const playlistIds = [
 	// Top 50 - New Zealand
 	'37i9dQZEVXbM8SIrkERIYl',
 	// Top 50 - Global
-	'37i9dQZEVXbMDoHDwVN2tF'
+	'37i9dQZEVXbMDoHDwVN2tF',
+	// Todays Top Hits
+	'37i9dQZF1DXcBWIGoYBM5M'
 ];
 
 const res = await fetch(`${process.env.VITE_API_BASE_URL}/playlists`, {
