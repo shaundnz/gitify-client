@@ -9,10 +9,6 @@
 	export let data: PageData;
 </script>
 
-<head>
-	<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-</head>
-
 <div class="flex">
 	<ResponsiveSidebar playlists={data.playlists} />
 	<slot />
