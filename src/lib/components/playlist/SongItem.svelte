@@ -8,6 +8,7 @@
 
 	export let song: PlaylistedTrackWithStatus;
 	$: track = song.track as Track;
+	$: thumbnailImage = track.album.images[track.album.images.length - 1];
 
 	const getBackgroundColor = (songStatus?: PlaylistSongStatus) => {
 		if (!songStatus) {
@@ -25,7 +26,7 @@
 </script>
 
 <div class={`flex space-x-4 items-center h-14 px-4 rounded ${backgroundColor}`}>
-	<img src={track.album.images[0].url} alt={track.album.name} class="w-10 h-10" />
+	<img src={thumbnailImage.url} alt={track.album.name} class="w-10 h-10" />
 	<div class="flex flex-1 justify-between">
 		<div>
 			<div class="text-white line-clamp-1">{track.name}</div>
