@@ -47,7 +47,7 @@ This project is hosted on AWS. The front end is a static site hosted on S3 and s
 
 ![AWS Architecture diagram for gitify](https://i.imgur.com/SRumGUl.png)
 
-This application was a great use case for serverless functions and static site generation, as the database is only updated with new information once a day.
+This application was a great use case for serverless functions and static site generation, as the database is only updated with new information once a day, and then the site is rebuilt with the updated information.
 
 The Lambdas are connected to REST API endpoints through API Gateway. They are only invoked once a day by the cron job to update the playlists with new snapshots, and then get the latest playlist information to generate the static build files. The Spotify API is used to generate the snapshots.
 
