@@ -50,7 +50,6 @@
 	};
 
 	const clearSelectedPlaylists = () => {
-		console.log('hi');
 		selectedPlaylistBefore = null;
 		selectedPlaylistAfter = null;
 	};
