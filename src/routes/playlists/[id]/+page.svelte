@@ -5,14 +5,15 @@
 
 	export let data: PageData;
 
-	$: ({ playlist } = data);
+	$: playlist = data.playlist;
+	$: playlistInfo = data.playlist.playlist;
 </script>
 
 <head>
-	<title>{playlist.playlist.name}</title>
+	<title>{playlistInfo.name}</title>
 </head>
 
 <div class="p-6 w-full">
-	<PlaylistHeader playlist={playlist.playlist} />
+	<PlaylistHeader playlist={playlistInfo} />
 	<PlaylistVersionCompare {playlist} />
 </div>

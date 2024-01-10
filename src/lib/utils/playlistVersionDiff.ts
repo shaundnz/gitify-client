@@ -1,35 +1,41 @@
 import { PlaylistSongStatus } from '$lib/constants';
-import type { PlaylistVersionDto } from '$lib/contracts';
+import type { PlaylistTrack, PlaylistVersionDto } from '$lib/contracts';
 import type { PlaylistedTrackWithStatus } from '$lib/types';
-import type { PlaylistedTrack } from '@spotify/web-api-ts-sdk';
+import type { Track } from '@spotify/web-api-ts-sdk';
 
 interface PlaylistVersionSongMap {
-	[id: string]: PlaylistedTrack;
+	[id: string]: PlaylistTrack;
 }
 
 export const playlistVersionDiff = (
 	versionBefore: PlaylistVersionDto,
-	versionAfter: PlaylistVersionDto
+	versionAfter: PlaylistVersionDto,
+	playlistSongsMap: { [id: string]: Track }
 ): [PlaylistedTrackWithStatus[], PlaylistedTrackWithStatus[]] => {
 	const versionBeforeMap: PlaylistVersionSongMap = {};
 
 	versionBefore.tracks.forEach((track) => {
-		versionBeforeMap[track.track.id] = track;
+		versionBeforeMap[track.id] = track;
 	});
 
 	const versionAfterMap: PlaylistVersionSongMap = {};
 	versionAfter.tracks.forEach((track) => {
-		versionAfterMap[track.track.id] = track;
+		versionAfterMap[track.id] = track;
 	});
 
 	const versionBeforeCompared: PlaylistedTrackWithStatus[] = Object.keys(versionBeforeMap).map(
 		(id) => {
 			// Song exists in both before and after version
 			if (id in versionAfterMap) {
-				return { ...versionBeforeMap[id] };
+				return { track: playlistSongsMap[id], id: id, added_at: versionBeforeMap[id].added_at };
 			}
 			// Song was in before version, but not in after version, was removed
-			return { ...versionBeforeMap[id], status: PlaylistSongStatus.Removed };
+			return {
+				track: playlistSongsMap[id],
+				id: id,
+				added_at: versionBeforeMap[id].added_at,
+				status: PlaylistSongStatus.Removed
+			};
 		}
 	);
 
@@ -37,10 +43,15 @@ export const playlistVersionDiff = (
 		(id) => {
 			// Song exists in both before and after version
 			if (id in versionBeforeMap) {
-				return { ...versionAfterMap[id] };
+				return { track: playlistSongsMap[id], id: id, added_at: versionAfterMap[id].added_at };
 			}
 			// Song is in after version, but not in before version, was added
-			return { ...versionAfterMap[id], status: PlaylistSongStatus.Added };
+			return {
+				track: playlistSongsMap[id],
+				id: id,
+				added_at: versionAfterMap[id].added_at,
+				status: PlaylistSongStatus.Added
+			};
 		}
 	);
 

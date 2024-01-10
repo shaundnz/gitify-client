@@ -1,10 +1,6 @@
 <script lang="ts">
-	import type { PlaylistedTrack } from '@spotify/web-api-ts-sdk';
 	import SongItem from './SongItem.svelte';
-	import type { PlaylistSongStatus } from '$lib/constants';
-	interface PlaylistedTrackWithStatus extends PlaylistedTrack {
-		status?: PlaylistSongStatus;
-	}
+	import type { PlaylistedTrackWithStatus } from '$lib/types';
 
 	export let songs: PlaylistedTrackWithStatus[];
 </script>

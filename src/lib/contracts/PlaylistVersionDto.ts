@@ -1,6 +1,9 @@
-import type { PlaylistedTrack } from '@spotify/web-api-ts-sdk';
-
 export interface PlaylistVersionDto {
 	versionDate: Date;
-	tracks: PlaylistedTrack[];
+	tracks: PlaylistTrack[];
+}
+
+export interface PlaylistTrack {
+	id: string;
+	added_at: string;
 }

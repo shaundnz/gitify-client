@@ -2,8 +2,10 @@
 	import { ActiveResponsivePlaylistTab } from '$lib/constants';
 	import type { PlaylistVersionDto } from '$lib/contracts';
 	import { playlistVersionDiff } from '$lib/utils';
+	import type { Track } from '@spotify/web-api-ts-sdk';
 	import PlaylistSongs from './PlaylistSongs.svelte';
 
+	export let playlistSongsMap: { [id: string]: Track };
 	export let selectedPlaylistBefore: PlaylistVersionDto | null = null;
 	export let selectedPlaylistAfter: PlaylistVersionDto | null = null;
 
@@ -40,10 +42,20 @@
 			{#if !selectedPlaylistBefore}
 				<div>No before playlist version selected</div>
 			{:else if !selectedPlaylistAfter}
-				<PlaylistSongs songs={selectedPlaylistBefore.tracks} />
+				<PlaylistSongs
+					songs={selectedPlaylistBefore.tracks.map((track) => ({
+						id: track.id,
+						added_at: track.added_at,
+						track: playlistSongsMap[track.id]
+					}))}
+				/>
 			{:else}
 				<PlaylistSongs
-					songs={playlistVersionDiff(selectedPlaylistBefore, selectedPlaylistAfter)[0]}
+					songs={playlistVersionDiff(
+						selectedPlaylistBefore,
+						selectedPlaylistAfter,
+						playlistSongsMap
+					)[0]}
 				/>
 			{/if}
 		</div>
@@ -52,10 +64,20 @@
 			{#if !selectedPlaylistAfter}
 				<div>No after playlist version selected</div>
 			{:else if !selectedPlaylistBefore}
-				<PlaylistSongs songs={selectedPlaylistAfter.tracks} />
+				<PlaylistSongs
+					songs={selectedPlaylistAfter.tracks.map((track) => ({
+						id: track.id,
+						added_at: track.added_at,
+						track: playlistSongsMap[track.id]
+					}))}
+				/>
 			{:else}
 				<PlaylistSongs
-					songs={playlistVersionDiff(selectedPlaylistBefore, selectedPlaylistAfter)[1]}
+					songs={playlistVersionDiff(
+						selectedPlaylistBefore,
+						selectedPlaylistAfter,
+						playlistSongsMap
+					)[1]}
 				/>
 			{/if}
 		</div>
@@ -67,10 +89,20 @@
 		{#if !selectedPlaylistBefore}
 			<div>No before playlist version selected</div>
 		{:else if !selectedPlaylistAfter}
-			<PlaylistSongs songs={selectedPlaylistBefore.tracks} />
+			<PlaylistSongs
+				songs={selectedPlaylistBefore.tracks.map((track) => ({
+					id: track.id,
+					added_at: track.added_at,
+					track: playlistSongsMap[track.id]
+				}))}
+			/>
 		{:else}
 			<PlaylistSongs
-				songs={playlistVersionDiff(selectedPlaylistBefore, selectedPlaylistAfter)[0]}
+				songs={playlistVersionDiff(
+					selectedPlaylistBefore,
+					selectedPlaylistAfter,
+					playlistSongsMap
+				)[0]}
 			/>
 		{/if}
 	</div>
@@ -79,10 +111,20 @@
 		{#if !selectedPlaylistAfter}
 			<div>No after playlist version selected</div>
 		{:else if !selectedPlaylistBefore}
-			<PlaylistSongs songs={selectedPlaylistAfter.tracks} />
+			<PlaylistSongs
+				songs={selectedPlaylistAfter.tracks.map((track) => ({
+					id: track.id,
+					added_at: track.added_at,
+					track: playlistSongsMap[track.id]
+				}))}
+			/>
 		{:else}
 			<PlaylistSongs
-				songs={playlistVersionDiff(selectedPlaylistBefore, selectedPlaylistAfter)[1]}
+				songs={playlistVersionDiff(
+					selectedPlaylistBefore,
+					selectedPlaylistAfter,
+					playlistSongsMap
+				)[1]}
 			/>
 		{/if}
 	</div>

@@ -1,22 +1,25 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
 	import ClearIcon from '~icons/material-symbols/close';
-	import { afterNavigate } from '$app/navigation';
+	import { beforeNavigate } from '$app/navigation';
 	import type { PlaylistVersionsDto, PlaylistVersionDto } from '$lib/contracts';
 	import PlaylistCompareList from './PlaylistCompareList.svelte';
 	export let playlist: PlaylistVersionsDto;
+
+	$: playlistSongsMap = playlist.playlistSongsMap;
+	$: playlistVersions = playlist.playlistVersions;
 
 	interface PlaylistVersionMap {
 		[date: string]: PlaylistVersionDto;
 	}
 
 	let playlistVersionsMap: PlaylistVersionMap = {};
-	$: playlist.playlistVersions.forEach((playlistVersion) => {
+	$: playlistVersions.forEach((playlistVersion) => {
 		playlistVersionsMap[playlistVersion.versionDate.toISOString()] = playlistVersion;
 	});
 
 	// Sort list most recent first
-	$: playlist.playlistVersions.sort((a, b) =>
+	$: playlistVersions.sort((a, b) =>
 		b.versionDate.toISOString().localeCompare(a.versionDate.toISOString())
 	);
 
@@ -25,11 +28,10 @@
 
 	// If after version selected, only show versions before after version date
 	$: getBeforePlaylistDropdownOptions = () => {
-		playlist;
 		if (!selectedPlaylistAfter) {
-			return playlist.playlistVersions;
+			return playlistVersions;
 		}
-		return playlist.playlistVersions.filter(
+		return playlistVersions.filter(
 			// Force selectedPlaylistAfter to be defined, typechecking doesn't
 			// recognize null check in line above
 			(version) => version.versionDate < selectedPlaylistAfter!.versionDate
@@ -39,20 +41,21 @@
 	// If before version is selected, only show version after version date
 	$: getAfterPlaylistDropdownOptions = () => {
 		if (!selectedPlaylistBefore) {
-			return playlist.playlistVersions;
+			return playlistVersions;
 		}
-		return playlist.playlistVersions.filter(
+		return playlistVersions.filter(
 			// Same force defined as above
 			(version) => version.versionDate > selectedPlaylistBefore!.versionDate
 		);
 	};
 
 	const clearSelectedPlaylists = () => {
+		console.log('hi');
 		selectedPlaylistBefore = null;
 		selectedPlaylistAfter = null;
 	};
 
-	afterNavigate(() => {
+	beforeNavigate(() => {
 		selectedPlaylistBefore = null;
 		selectedPlaylistAfter = null;
 	});
@@ -97,6 +100,7 @@
 					</select>
 				</div>
 			</div>
+
 			<div class="ml-4">
 				<button
 					class="btn normal-case"
@@ -108,5 +112,5 @@
 			</div>
 		</div>
 	</div>
-	<PlaylistCompareList {selectedPlaylistBefore} {selectedPlaylistAfter} />
+	<PlaylistCompareList {selectedPlaylistBefore} {selectedPlaylistAfter} {playlistSongsMap} />
 </div>
