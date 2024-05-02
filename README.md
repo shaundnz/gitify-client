@@ -51,7 +51,7 @@ This application was a great use case for serverless functions and static site g
 
 The Lambdas are connected to REST API endpoints through API Gateway. They are only invoked once a day by the cron job to update the playlists with new snapshots, and then get the latest playlist information to generate the static build files. The Spotify API is used to generate the snapshots.
 
-Static site generation was also ideal as content served to the client only needs to be changed once a day. All API requests are made at build time, and these responses are baked into the generated build files. This removes the issue of Lambda cold starts as the API response information is part of the static build and is served directly from S3, additionally, these files can be cached by CloudFront, ensuring very fast load times.
+Static site generation was also ideal as content served to the client only needs to be changed once a day. All API requests are made at build time, and these responses are baked into the generated build files. This removes the issue of Lambda cold starts as the API response information is part of the static build and is served directly from S3, additionally, these files can be cached by CloudFront, ensuring for very fast load times.
 
 ## Additional Notes
 
