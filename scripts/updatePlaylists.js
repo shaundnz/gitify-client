@@ -34,9 +34,59 @@ const res = await fetch(`${process.env.VITE_API_BASE_URL}/playlists`, {
 	}
 });
 
-const jsonRes = await res.json();
-console.log(jsonRes);
-
 if (!res.ok) {
-	throw Error('Something went wrong updating the playlist');
+	throw new Error('Something went wrong invoking the update playlist job');
 }
+
+const jsonRes = await res.json();
+const jobId = jsonRes.jobId;
+
+console.log(`Update playlist job triggered with id: ${jobId}`);
+
+const getJobStatus = async () => {
+	const jobStatusResponse = await fetch(`${process.env.VITE_API_BASE_URL}/jobstatus/${jobId}`, {
+		headers: {
+			'X-API-Key': process.env.SECRET_API_KEY
+		}
+	});
+
+	const data = await jobStatusResponse.json();
+
+	if (!jobStatusResponse.ok) {
+		throw new Error(
+			`Error getting job status. Status Code: ${jobStatusResponse.status}, Response: ${data}`
+		);
+	}
+
+	console.log(`Polling jobId: ${data.jobId}, Status: ${data.status}`);
+
+	return data.status;
+};
+
+const pollJobStatus = (interval, timeout) => {
+	var endTime = Number(new Date()) + (timeout || 2000);
+	interval = interval || 100;
+
+	const checkJobCompleted = async () => {
+		const status = await getJobStatus(jobId);
+
+		if (status === 'SUCCESS') {
+			console.log('Successfully updated playlists');
+			return;
+		}
+
+		if (status === 'ERROR') {
+			throw new Error(`Error occurred while updating playlists, jobId: ${jobId}`);
+		}
+
+		if (Number(new Date()) < endTime) {
+			setTimeout(checkJobCompleted, interval);
+		} else {
+			throw new Error(`Failed to update playlist within the timeout: ${timeout} ms`);
+		}
+	};
+
+	return checkJobCompleted();
+};
+
+await pollJobStatus(5000, 60000);
